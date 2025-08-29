@@ -1,46 +1,50 @@
-package busBook;
+package busReservationdbconnection;
 
+import java.util.*;
+import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.text.SimpleDateFormat; 
 
 public class BookingBus {
-	private String pasangerName;
-	private int busno;
-	Date date;
-//	public BookingBus(String pasangerName, int busno, Date date) {
-//		super();
-//		this.pasangerName = pasangerName;
-//		this.busno = busno;
-//		this.date = date;
-//	}
-	Scanner sc=new Scanner(System.in);
-	      BookingBus() throws ParseException {
+	 String passangerName;
+	 int busNo;
+	 Date date;
+
+	
+	  BookingBus()
+	  {
+	    Scanner sc=new Scanner(System.in);
 		System.out.println("enter your name");
-		String pasangerName=sc.nextLine();
+		passangerName=sc.next();
 		System.out.println("enter booking bus number");
-		int busno=sc.nextInt();
+		busNo=sc.nextInt();
 		System.out.println("give the dd-MM-yyyy");
 		String dateInput=sc.next();
 		SimpleDateFormat dateformate=new SimpleDateFormat("dd-MM-yyyy");
-		date=dateformate.parse(dateInput);
-	}
-	      int capacity=0;
-		public boolean isAvalable(ArrayList<Bus> buses, ArrayList<BookingBus> bokbus) {
-			for(Bus bus:buses) {
-				if(bus.getBusNo()==busno) 
-					capacity=bus.getCapacity();
-			}
-			int booked=0;
-			for (BookingBus bookingBus : bokbus) {
-				if(bookingBus.busno==busno && bookingBus.date.equals(date));
-				booked++;
-					
-			}
-			return booked<capacity?true:false;
-//			return true;
+		System.out.println(passangerName+ " "+busNo);
+		
+		try {
+			date = dateformate.parse(dateInput);
+			System.out.println(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
+	 }
+
+	  	public boolean isAvailable()  throws SQLException{
+	  		
+	  		BusDAO busdao = new BusDAO();
+	  		int capacity = busdao.getCapacity(busNo);
+//	  		int capacity=BusDAO.getCapacity(busNo)
+	  		System.out.println("capacity-->"+capacity);
+	  		
+	  		BookingDAO bookingdao = new BookingDAO();
+
+	  		int booked = bookingdao.getBookedCount(busNo,date);
+	  		System.out.println("booked-->"+booked);
+	  		
+	  		return booked<capacity;
+	  		
+	  	}
 	
 }

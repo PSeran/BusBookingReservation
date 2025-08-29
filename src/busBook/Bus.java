@@ -1,12 +1,12 @@
-package busBook;
+package busReservationdbconnection;
 
 public class Bus {
 	private int busNo;
 	private boolean ac;
 	private  int capacity;
-	public Bus(int busNo, boolean ac, int capacity) {
-		super();
-		this.busNo = busNo;
+	public Bus(int no, boolean ac, int capacity) {
+		
+		this.busNo = no;
 		this.ac = ac;
 		this.capacity = capacity;
 	}
@@ -28,11 +28,11 @@ public class Bus {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
-	public void busdatainfo() {
-		System.out.println("Bus No:" + busNo + " Ac:" + ac + " Total Capacity: " +capacity);
-
-		
-	}
+//	public void diplaydata() {
+//		System.out.println("Bus No:" + busNo + " Ac:" + ac + " Total Capacity: " +capacity);
+//
+//		
+//	}
 	
 
 }

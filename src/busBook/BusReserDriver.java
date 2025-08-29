@@ -1,37 +1,44 @@
-package busBook;
+package busReservationdbconnection;
 
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class BusReserDriver {
 
-	public static void main(String[] args) throws ParseException {
-		Scanner s=new Scanner(System.in);
-		ArrayList<Bus> buses=new ArrayList<Bus>();
-		ArrayList<BookingBus> bokbus=new ArrayList<BookingBus>();
-		buses.add(new Bus(1,true,2));
-		buses.add(new Bus(2,false,2));
-		buses.add(new Bus(3,true,2));
-		for (Bus b : buses) {
-			b.busdatainfo();
-		}
-		char yn='y';
-		while(yn=='y') {
-			System.out.println("you want to booking bus 1 or 2 exit");
-			char condition=s.next().charAt(0);
-					System.out.println(condition);
-			if (condition=='y') {
-				BookingBus bookb=new BookingBus(); 
-				if (bookb.isAvalable(buses,bokbus)) {
-					bokbus.add(bookb);
-					System.out.println("booking is completed enjoy your jorney");
+	public static void main(String[] args) throws SQLException {
+		try {
+			BusDAO busdao=new BusDAO();
+			busdao.busdatainfo();
+			
+			int userOpt = 1;
+			Scanner scanner = new Scanner(System.in);
+					
+			while(userOpt==1) {
+				System.out.println("Enter 1 to Book and 2 to exit");
+				userOpt = scanner.nextInt();
+//				System.out.println(userOpt);
+				if(userOpt == 1) {
+					BookingBus booking = new BookingBus();
+					System.out.println("booking bus called");
+					if(booking.isAvailable()) {
+						System.out.println("is avalable method called");  //it is not work
+						BookingDAO bookingdao = new BookingDAO();
+						bookingdao.addBooking(booking);
+						System.out.println("Your booking is confirmed");
+					}
+					else {
+						System.out.println("bus seets not avalable");
+					}
+					
 				}
-				
+				else {
+					System.out.println("Sorry. Bus is full. Try another bus or date.");
+				}
 			}
-			else
-				yn='n';
-			System.out.println("thank you i'm wait you one's viset");
+			scanner.close();
+		}
+		catch(Exception e) {
+			System.out.println(e);
 		}
 	}
 
